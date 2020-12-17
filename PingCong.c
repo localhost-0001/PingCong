@@ -7,6 +7,10 @@ typedef struct Ball{
 
 } Ball;
 
+typedef struct Racket{
+	unsigned int size, pos_x, pos_y;
+} Racket;
+
 void invertDeltaY(Ball);
 void invertDeltaX(Ball);
 
