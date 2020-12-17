@@ -3,8 +3,8 @@
 #include <unistd.h>
 
 typedef struct Ball{ 
-	unsigned int cor_x, cor_y; 
-	int deltaX, deltaY; 
+	unsigned int cor_y; 
+	int deltaX, deltaY, cor_x; 
 } Ball;
 
 typedef struct Racket{ 
@@ -31,6 +31,7 @@ int main(){
 	printf("Hello World!"); 
 	initscr(); //Set-up all screen stuffs
 	nodelay(stdscr, 1); 
+	noecho();
 	curs_set(FALSE); 
 	keypad(stdscr, 1);
 	border('X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'); //Add border around screen
@@ -39,7 +40,7 @@ int main(){
 	m_x--; // It's 1 too many, if not doing this text falls of the screen m_y--;
 	//Now let's create the Ball
 	GameBall.deltaX = -10; 
-	GameBall.deltaY = 0; 
+	GameBall.deltaY = 10; 
 	GameBall.cor_x = m_x/2;
 	//Set to somewhat of the middle of the screen 
 	GameBall.cor_y = m_y/2;
@@ -49,7 +50,8 @@ int main(){
 	rightRacket.size = leftRacket.size; 
 	leftRacket.pos_y = m_y/2; //somewhat middle of y 
 	rightRacket.pos_y = leftRacket.pos_y;
-	leftRacket.pos_x = 0; rightRacket.pos_x = m_x;
+	leftRacket.pos_x = 1; 
+	rightRacket.pos_x = m_x - 1;
 
 	//Add the scoreboard
 	leftScore.pos_x = 0.25*m_x; 
@@ -69,7 +71,6 @@ int main(){
 	for(int i = 0; i < leftRacket.size; i++){
 		 mvprintw(leftRacket.pos_y-i, leftRacket.pos_x, "|"); 
 		 mvprintw(rightRacket.pos_y-i, rightRacket.pos_x, "|"); 
-		 continue; 
 	}
 	
 	//Print the Scoreboard
@@ -80,20 +81,38 @@ int main(){
 	refresh(); // Show first screen 
 	while(active){
 		clear(); 
-		input_char = wgetch(stdscr); 
+		input_char = getch(); 
 		//let's process the input
-			
+		if(input_char ==
+		KEY_UP){
+			rightRacket.pos_y--; } else if(input_char == 
+		KEY_DOWN){
+			rightRacket.pos_y++;
+		} else if(input_char == 
+		'w') {leftRacket.pos_y--;} else if(input_char == 
+		's') {leftRacket.pos_y++;}
+		while(getch() != ERR){};
+		input_char = 0;
 		mvprintw(GameBall.cor_y, GameBall.cor_x, "O"); //show selected key
+		for(int i = 0; i < leftRacket.size; i++){ // show dem racklette
+			 mvprintw(leftRacket.pos_y-i, leftRacket.pos_x, "|"); 
+			 mvprintw(rightRacket.pos_y-i, rightRacket.pos_x, "|"); 
+		}
+		border('X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'); //Add border around screen
+		mvprintw(leftScore.pos_y, leftScore.pos_x, "%d", leftScore.value); //Scoreboard also wants to be there
+		mvprintw(rightScore.pos_y, rightScore.pos_x, "%d", rightScore.value);	
 		//Check for GameBall collisions
-		if((GameBall.cor_x == leftRacket.pos_x && GameBall.cor_y >= leftRacket.pos_y-leftRacket.size && GameBall.cor_y <= leftRacket.pos_y) || (GameBall.cor_x == rightRacket.pos_x && GameBall.cor_y >= rightRacket.pos_y-rightRacket.size && GameBall.cor_y <= rightRacket.pos_y)){
-			invertDeltaX(&GameBall);}
-		if(GameBall.cor_x > m_x){ return 0; }
+		if((GameBall.cor_x == leftRacket.pos_x && GameBall.cor_y > leftRacket.pos_y-leftRacket.size && GameBall.cor_y <= leftRacket.pos_y) || (GameBall.cor_x == rightRacket.pos_x && GameBall.cor_y > rightRacket.pos_y-rightRacket.size && GameBall.cor_y <= rightRacket.pos_y)){
+			invertDeltaX(&GameBall);} //Let the Ball bounce up and down
+		if(GameBall.cor_x > m_x){ leftScore.value++; GameBall.cor_y = m_y/2; GameBall.cor_x = m_x/2; }
+		if(GameBall.cor_x < 0){ rightScore.value++; GameBall.cor_y = m_y/2; GameBall.cor_x = m_x/2; }
 		if(GameBall.cor_y >= m_y){
 			invertDeltaY(&GameBall);}	
 		//Update GameBall cords
 		GameBall.cor_y += GameBall.deltaY/10;
 		GameBall.cor_x += GameBall.deltaX/10;
 		refresh();
+		//napms(1000/100);
 		usleep(100000);
 	}
 	sleep(10000);
