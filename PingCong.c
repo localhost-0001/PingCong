@@ -1,4 +1,11 @@
 #include <stdio.h>
+#include<ncurses.h>
+
+typedef struct{
+	unsigned int cor_x, cor_y;
+	int deltaX, deltaY;
+} Ball;
+
 
 int main(){
 	printf("Hello World!");
@@ -7,9 +14,5 @@ int main(){
 	curs_set(FALSE);
 	keypad(stdscr, 1);
 	refresh();
-	sleep(1);
-	
-	
-
 	return 0;
 }
