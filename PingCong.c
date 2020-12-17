@@ -7,6 +7,9 @@ typedef struct Ball{
 
 } Ball;
 
+void invertDeltaY(Ball);
+void invertDeltaX(Ball);
+
 int main(){
 	//declare some stuff
 	int m_x, m_y; //max_{x,y}
@@ -28,6 +31,8 @@ int main(){
 	GameBall.cor_y = m_y/2;
 	mvprintw(GameBall.cor_y, GameBall.cor_x, "O"); //Now show the the Ball at the initial Position
 
+	//Now set-up the rackets
+
 	refresh(); // Show first screen
 	sleep(10000);
 	return 0;
@@ -35,4 +40,7 @@ int main(){
 
 void invertDeltaX(Ball ball){
 	ball.deltaX = -ball.deltaX;
+}
+void invertDeltaY(Ball ball){
+	ball.deltaY = -ball.deltaY;
 }
