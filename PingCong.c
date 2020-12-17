@@ -11,6 +11,11 @@ typedef struct Racket{
 	unsigned int size, pos_x, pos_y;
 } Racket;
 
+typedef struct Score{
+	unsigned int pos_x, pos_y;
+	int value;
+} Score;
+
 void invertDeltaY(Ball);
 void invertDeltaX(Ball);
 
@@ -19,6 +24,7 @@ int main(){
 	int m_x, m_y; //max_{x,y}
 	struct Ball GameBall; 
 	struct Racket leftRacket, rightRacket;
+	struct Score leftScore, rightScore;
 
 	printf("Hello World!");
 	initscr(); //Set-up all screen stuffs
@@ -45,16 +51,29 @@ int main(){
 	leftRacket.pos_x = 0;
 	rightRacket.pos_x = m_x;
 
+	//Add the scoreboard
+	leftScore.pos_x = 0.25*m_x;
+	leftScore.pos_y = 1;
+	leftScore.value = 0;
+	rightScore.pos_x = 0.75*m_x;
+	rightScore.pos_y = 1;
+	rightScore.value = 0;
+	
+	//Print some cool stats about the left racket 
+	/*
 	mvprintw(m_y/2, m_x/2, "%d", leftRacket.size);
 	mvprintw(m_y/2+1, m_x/2, "%d", leftRacket.pos_y);
 	mvprintw(m_y/2-1, m_x/2, "%d", leftRacket.pos_x);
-
+	*/
+	//Print the rackets
 	for(int i = 0; i < leftRacket.size; i++){
 		mvprintw(leftRacket.pos_y-i, leftRacket.pos_x, "|");
 		mvprintw(rightRacket.pos_y-i, rightRacket.pos_x-1, "|");
 		continue;
 	}
-
+	//Print the Scoreboard
+	mvprintw(leftScore.pos_y, leftScore.pos_x, "%d", leftScore.value);
+	mvprintw(rightScore.pos_y, rightScore.pos_x, "%d", rightScore.value);
 	refresh(); // Show first screen
 	sleep(10000);
 	return 0;
