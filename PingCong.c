@@ -30,7 +30,6 @@ int main(){
 
 	printf("Hello World!"); 
 	initscr(); //Set-up all screen stuffs
-	nodelay(stdscr, 1); 
 	noecho();
 	curs_set(FALSE); 
 	keypad(stdscr, 1);
@@ -80,6 +79,7 @@ int main(){
 
 	mvprintw(GameBall.cor_y, GameBall.cor_x, "O"); //Now show the the Ball at the initial Position 
 	refresh(); // Show first screen 
+	nodelay(stdscr, 1); //FastInput, would be funny if you had to input a keystroke before the game continues...
 	while(active){
 		clear(); 
 		input_char = getch(); 
