@@ -47,6 +47,7 @@ int main(){
 
 	//Now set-up the rackets
 	leftRacket.size = m_y/10; //set right size, for both of them
+	if(leftRacket.size < 3){leftRacket.size = 3;}
 	rightRacket.size = leftRacket.size; 
 	leftRacket.pos_y = m_y/2; //somewhat middle of y 
 	rightRacket.pos_y = leftRacket.pos_y;
@@ -103,10 +104,10 @@ int main(){
 		mvprintw(rightScore.pos_y, rightScore.pos_x, "%d", rightScore.value);	
 		//Check for GameBall collisions
 		if((GameBall.cor_x == leftRacket.pos_x && GameBall.cor_y > leftRacket.pos_y-leftRacket.size && GameBall.cor_y <= leftRacket.pos_y) || (GameBall.cor_x == rightRacket.pos_x && GameBall.cor_y > rightRacket.pos_y-rightRacket.size && GameBall.cor_y <= rightRacket.pos_y)){
-			invertDeltaX(&GameBall);} //Let the Ball bounce up and down
+			invertDeltaX(&GameBall);} 
 		if(GameBall.cor_x > m_x){ leftScore.value++; GameBall.cor_y = m_y/2; GameBall.cor_x = m_x/2; }
 		if(GameBall.cor_x < 0){ rightScore.value++; GameBall.cor_y = m_y/2; GameBall.cor_x = m_x/2; }
-		if(GameBall.cor_y >= m_y){
+		if(GameBall.cor_y >= (m_y - 2) || GameBall.cor_y <= 1){ //let the ball bounce up and down
 			invertDeltaY(&GameBall);}	
 		//Update GameBall cords
 		GameBall.cor_y += GameBall.deltaY/10;
