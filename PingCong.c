@@ -131,8 +131,7 @@ int main(){
 		GameBall.cor_y += GameBall.deltaY/10;
 		GameBall.cor_x += GameBall.deltaX/10;
 		refresh();
-		//napms(1000/100);
-		usleep(100000);
+		napms(100);
 	}
 	sleep(10000);
 	return 0;
