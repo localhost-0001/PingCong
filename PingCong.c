@@ -1,6 +1,7 @@
 #include <stdio.h> 
 #include <ncurses.h> 
 #include <unistd.h>
+#include <string.h>
 
 typedef struct Ball{ 
 	unsigned int cor_y; 
@@ -27,16 +28,32 @@ int main(){
 	struct Score leftScore, rightScore; 
 	bool active = 1; 
 	int input_char;
+	char *disptxt	= "Welcome to PingCong!";
 
 	printf("Hello World!"); 
 	initscr(); //Set-up all screen stuffs
 	noecho();
 	curs_set(FALSE); 
 	keypad(stdscr, 1);
-	border('X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'); //Add border around screen
 
 	getmaxyx(stdscr, m_y, m_x); // How much is the screen?  
 	m_x--; // It's 1 too many, if not doing this text falls of the screen m_y--;
+	
+	attron(A_BOLD);
+	mvprintw(m_y*0.25, (m_x - strlen(disptxt))*0.5, disptxt);
+	attroff(A_BOLD);
+	attron(A_STANDOUT);
+	attron(A_BLINK);
+	mvprintw(m_y*0.5, (m_x - strlen("START"))*0.5, "START");
+	attroff(A_BLINK);
+	attroff(A_STANDOUT);
+	refresh();
+	
+	bool menuActive = 1;
+	while(menuActive){
+		if(getch() == '\n'){menuActive = 0;}
+	}
+	
 	//Now let's create the Ball
 	GameBall.deltaX = -10; 
 	GameBall.deltaY = 10; 
@@ -78,6 +95,7 @@ int main(){
 	mvprintw(rightScore.pos_y, rightScore.pos_x, "%d", rightScore.value);
 
 	mvprintw(GameBall.cor_y, GameBall.cor_x, "O"); //Now show the the Ball at the initial Position 
+	border('X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'); //Add border around screen
 	refresh(); // Show first screen 
 	nodelay(stdscr, 1); //FastInput, would be funny if you had to input a keystroke before the game continues...
 	while(active){
