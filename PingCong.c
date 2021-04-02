@@ -86,7 +86,7 @@ int main(){
 	keypad(stdscr, 1);
 
 	getmaxyx(stdscr, m_y, m_x); // How much is the screen?  
-	m_x--; // It's 1 too many, if not doing this text falls of the screen m_y--;
+	m_x--; // It's 1 too many, if not doing this text falls of the screen 
 	
 	while(selection != 1){
 		selection = menu(m_x, m_y);
@@ -94,6 +94,7 @@ int main(){
 			endwin();
 			return 0;}
 		gameLoop(m_x, m_y);
+		clear();
 	}
 	return 0;
 }
@@ -161,6 +162,7 @@ int gameLoop(int m_x, int m_y){
 			} else if(input_char == 
 			'w') {leftRacket.pos_y--;} else if(input_char == 
 			's') {leftRacket.pos_y++;}
+			else if(input_char == 'q'){ active = 0;}
 			while(getch() != ERR){};
 			input_char = 0;
 			mvprintw(GameBall.cor_y, GameBall.cor_x, "O"); //show selected key
