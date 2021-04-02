@@ -19,26 +19,11 @@ typedef struct Score{
 
 void invertDeltaY(Ball*); 
 void invertDeltaX(Ball*);
+int menu(int, int);
+int menu(int m_x, int m_y){
 
-int main(){
-	//declare some stuff
-	int m_x, m_y; //max_{x,y} 
-	struct Ball GameBall; 
-	struct Racket leftRacket, rightRacket; 
-	struct Score leftScore, rightScore; 
-	bool active = 1; 
-	int input_char;
-	char *disptxt	= "Welcome to PingCong!";
+	char *disptxt = "Welcome to PingCong!";
 
-	printf("Hello World!"); 
-	initscr(); //Set-up all screen stuffs
-	noecho();
-	curs_set(FALSE); 
-	keypad(stdscr, 1);
-
-	getmaxyx(stdscr, m_y, m_x); // How much is the screen?  
-	m_x--; // It's 1 too many, if not doing this text falls of the screen m_y--;
-	
 	attron(A_BOLD);
 	mvprintw(m_y*0.25, (m_x - strlen(disptxt))*0.5, disptxt);
 	attroff(A_BOLD);
@@ -53,6 +38,27 @@ int main(){
 	while(menuActive){
 		if(getch() == '\n'){menuActive = 0;}
 	}
+
+}
+
+int main(){
+	//declare some stuff
+	int m_x, m_y; //max_{x,y} 
+	struct Ball GameBall; 
+	struct Racket leftRacket, rightRacket; 
+	struct Score leftScore, rightScore; 
+	bool active = 1; 
+	int input_char;
+
+	initscr(); //Set-up all screen stuffs
+	noecho();
+	curs_set(FALSE); 
+	keypad(stdscr, 1);
+
+	getmaxyx(stdscr, m_y, m_x); // How much is the screen?  
+	m_x--; // It's 1 too many, if not doing this text falls of the screen m_y--;
+	
+	menu(m_x, m_y);
 	
 	//Now let's create the Ball
 	GameBall.deltaX = -10; 
